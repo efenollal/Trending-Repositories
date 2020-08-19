@@ -14,10 +14,11 @@ class CreateRepositoriesTable extends Migration
     public function up()
     {
         Schema::create('repositories', function (Blueprint $table) {
-            $table->id();
-            $table->string('repository_id');
+            $table->increments('id');
+            $table->integer('repository_id');
             $table->string('name');
             $table->string('url');
+            $table->dateTime('last_push_date', 0);
             $table->timestamps();
         });
     }
