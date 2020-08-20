@@ -1,10 +1,13 @@
 ## How to set up
 
+After cloning the repository follow these steps:
+
 ### MySQL
 Create a database with any name you like (e.g. trending\repositories).
 
 ### Laravel
-After cloning the repository follow these steps:
+Once the database is created, proceed with the next steps:
+
 - On your terminal, navigate to the root of the project.
 - From there, run composer install. This will install the required dependencies for the project.
 - When composer is finished installing dependencies, run npm install. This will download and install node dependencies.
