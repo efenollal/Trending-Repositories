@@ -2010,6 +2010,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -37772,77 +37776,110 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "card-body" },
-        _vm._l(_vm.repositories, function(repository) {
-          return _c("ul", { key: repository.id, staticClass: "list-group" }, [
-            _c("li", { staticClass: "list-group-item" }, [
-              _c("h1", { staticClass: "h3 lh-condensed mt-2 mb-2" }, [
-                _c(
-                  "a",
-                  { attrs: { href: repository.html_url, target: "_blank" } },
-                  [_vm._v(_vm._s(repository.full_name))]
-                ),
-                _vm._v(" "),
-                _c("small", { staticClass: "smallest float-right" }, [
-                  _vm._v("Repository ID: " + _vm._s(repository.id))
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-9" }, [
-                  _c("p", { staticClass: "text-gray my-1 pr-4" }, [
-                    _c("small", [_vm._v(_vm._s(repository.description))])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-6 url" }, [
-                  _c("a", { attrs: { href: repository.homepage } }, [
-                    _vm._v(_vm._s(repository.homepage))
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "g6 text-gray mt-2 stats" }, [
-                _c("span", { staticClass: "d-inline-block ml-0 mr-3" }, [
-                  _c("i", { staticClass: "fa fa-calendar" }),
-                  _vm._v(
-                    " Created Date: " +
-                      _vm._s(repository.created_at) +
-                      "\n                        "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("span", { staticClass: "d-inline-block mr-3" }, [
-                  _c("i", { staticClass: "fa fa-calendar" }),
-                  _vm._v(
-                    " Last Push Date: " +
-                      _vm._s(repository.pushed_at) +
-                      "\n                        "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("span", { staticClass: "d-inline-block float-sm-right" }, [
-                  _c("i", { staticClass: "fa fa-star" }),
-                  _vm._v(
-                    " Total Stars: " +
-                      _vm._s(repository.stargazers_count) +
-                      "\n                        "
-                  )
-                ])
-              ])
-            ])
-          ])
-        }),
-        0
-      )
+      _c("div", { staticClass: "card-body" }, [
+        _vm.repositories.length === 0
+          ? _c("div", [_vm._m(0)])
+          : _c(
+              "div",
+              _vm._l(_vm.repositories, function(repository) {
+                return _c(
+                  "ul",
+                  { key: repository.id, staticClass: "list-group" },
+                  [
+                    _c("li", { staticClass: "list-group-item" }, [
+                      _c("h1", { staticClass: "h3 lh-condensed mt-2 mb-2" }, [
+                        _c(
+                          "a",
+                          {
+                            attrs: {
+                              href: repository.html_url,
+                              target: "_blank"
+                            }
+                          },
+                          [_vm._v(_vm._s(repository.full_name))]
+                        ),
+                        _vm._v(" "),
+                        _c("small", { staticClass: "smallest float-right" }, [
+                          _vm._v("Repository ID: " + _vm._s(repository.id))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-9" }, [
+                          _c("p", { staticClass: "text-gray my-1 pr-4" }, [
+                            _c("small", [
+                              _vm._v(_vm._s(repository.description))
+                            ])
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-6 url" }, [
+                          _c("a", { attrs: { href: repository.homepage } }, [
+                            _vm._v(_vm._s(repository.homepage))
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "g6 text-gray mt-2 stats" }, [
+                        _c(
+                          "span",
+                          { staticClass: "d-inline-block ml-0 mr-3" },
+                          [
+                            _c("i", { staticClass: "fa fa-calendar" }),
+                            _vm._v(
+                              " Created Date: " +
+                                _vm._s(repository.created_at) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "d-inline-block mr-3" }, [
+                          _c("i", { staticClass: "fa fa-calendar" }),
+                          _vm._v(
+                            " Last Push Date: " +
+                              _vm._s(repository.pushed_at) +
+                              "\n                        "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          { staticClass: "d-inline-block float-sm-right" },
+                          [
+                            _c("i", { staticClass: "fa fa-star" }),
+                            _vm._v(
+                              " Total Stars: " +
+                                _vm._s(repository.stargazers_count) +
+                                "\n                        "
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  ]
+                )
+              }),
+              0
+            )
+      ])
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "text-center" }, [
+      _vm._v("No Repositories available. Click on "),
+      _c("strong", [_vm._v("Get Repositories")]),
+      _vm._v(" button to populate list.")
+    ])
+  }
+]
 render._withStripped = true
 
 

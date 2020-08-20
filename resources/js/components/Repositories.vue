@@ -13,7 +13,10 @@
                 </div>
             </div>
             <div class="card-body">
-                <!-- <h5 class="card-title">Special title treatment</h5> -->
+                <div v-if="repositories.length === 0">
+                    <p class="text-center">No Repositories available. Click on <strong>Get Repositories</strong> button to populate list.</p>
+                </div>
+                <div v-else>
                 <ul class="list-group" v-for="repository in repositories" :key="repository.id">
                     <li class="list-group-item">
                         <h1 class="h3 lh-condensed mt-2 mb-2">
@@ -45,6 +48,7 @@
                         </div>
                     </li>
                 </ul>
+                </div>
             </div>
         </div>
     </div>

@@ -20,11 +20,4 @@
         </div>
     <script src="{{ mix('js/app.js') }}"></script>
     </body>
-    <footer class="page-footer font-small navbar-dark bg-dark mt-5">
-
-        <!-- Copyright -->
-        <div class="footer-copyright text-center py-3 text-white">© 2020 Edwin Fenollal</div>
-        <!-- Copyright -->
-
-      </footer>
 </html>
