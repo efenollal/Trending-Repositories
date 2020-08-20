@@ -17,8 +17,11 @@ class CreateRepositoriesTable extends Migration
             $table->increments('id');
             $table->integer('repository_id');
             $table->string('name');
+            $table->text('description');
             $table->string('url');
-            $table->dateTime('last_push_date', 0);
+            $table->date('last_push_date', 0);
+            $table->date('created_date', 0);
+            $table->integer('stars');
             $table->timestamps();
         });
     }

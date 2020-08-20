@@ -4,10 +4,11 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-6">
-                        Featured
+                        Featured PHP Repositories
                     </div>
                     <div class="col-6">
-                        <button class="btn btn-primary float-right" @click="getRepositories">Get Repositories</button>
+                        <button v-if="state.saved === 0" class="btn btn-primary float-right" @click="getDbData">Get Repositories</button>
+                        <button v-else class="btn btn-primary float-right" @click="getRepositories">Update Repositories</button>
                     </div>
                 </div>
             </div>
@@ -15,8 +16,8 @@
                 <!-- <h5 class="card-title">Special title treatment</h5> -->
                 <ul class="list-group" v-for="repository in repositories" :key="repository.id">
                     <li class="list-group-item">
-                        <h1 class="h3 lh-condensed m-2">
-                            <a href="#">{{ repository.full_name }}</a>
+                        <h1 class="h3 lh-condensed mt-2 mb-2">
+                            <a :href="repository.html_url" target="_blank">{{ repository.full_name }}</a>
                             <small class="smallest float-right">Repository ID: {{ repository.id }}</small>
                         </h1>
                         <div class="row">
@@ -28,7 +29,7 @@
                         </div>
                         <div class="row">
                             <div class="col-6 url">
-                                <a :href="repository.html_url">{{ repository.html_url }}</a>
+                                <a :href="repository.homepage">{{ repository.homepage }}</a>
                             </div>
                         </div>
                         <div class="g6 text-gray mt-2 stats">
@@ -44,8 +45,6 @@
                         </div>
                     </li>
                 </ul>
-                <!-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a> -->
             </div>
         </div>
     </div>
@@ -55,22 +54,68 @@
     export default {
         data() {
             return{
+                state: {
+                    saved: 0,
+                },
                 repositories: [],
             }
         },
-        mounted() {
-            // this.getRepositories();
-        },
+
         methods: {
+            getDbData() {
+                axios.get('api/repositories')
+                    .then(response => {
+                        if (response.data.length === 0) {
+                            console.log('here')
+                            this.getRepositories()
+                        } else {
+                            this.repositories = response.data
+                            this.state.saved = !this.state.saved
+                        }
+                    })
+                    .catch(error => console.log(error));
+
+            },
+
             getRepositories() {
+                this.repositories = []
                 axios
                     .get('https://api.github.com/search/repositories?q=language:php+sort:stars')
                     .then(response => {
                         this.repositories = response.data.items
+                        this.saveOrUpdateRepositories(this.repositories)
+                        this.state.saved = 1;
                     })
-                    .catch(error => (
-                        console.log(error)
-                    ));
+                    .catch(error => console.log(error));
+            },
+
+            saveOrUpdateRepositories(repositories) {
+                axios
+                    .post('api/repositories', this.filterRepositories(repositories))
+                    .then(response => {
+                        alert(`Repositories ${this.state.saved === 0 ? 'saved' : 'updated'}!`)
+                        this.state.saved = 1;
+                    })
+                    .catch(error => console.log(error));
+            },
+
+            filterRepositories(repositories) {
+                return repositories.map(repo => (
+                    {
+                        'repository_id': repo.id,
+                        'name': repo.full_name,
+                        'url': repo.html_url,
+                        'last_push_date': this.convertISOToDate(repo.pushed_at),
+                        'created_date': this.convertISOToDate(repo.created_at),
+                        'description': repo.description,
+                        'stars': repo.stargazers_count,
+                    }
+                ));
+            },
+
+            convertISOToDate(isoDate) {
+                let date = new Date(isoDate);
+                return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
             }
         },
     };

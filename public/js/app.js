@@ -2010,24 +2010,74 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      state: {
+        saved: 0
+      },
       repositories: []
     };
   },
-  mounted: function mounted() {// this.getRepositories();
-  },
   methods: {
-    getRepositories: function getRepositories() {
+    getDbData: function getDbData() {
       var _this = this;
 
-      axios.get('https://api.github.com/search/repositories?q=language:php+sort:stars').then(function (response) {
-        _this.repositories = response.data.items;
+      axios.get('api/repositories').then(function (response) {
+        if (response.data.length === 0) {
+          console.log('here');
+
+          _this.getRepositories();
+        } else {
+          _this.repositories = response.data;
+          _this.state.saved = !_this.state.saved;
+        }
       })["catch"](function (error) {
         return console.log(error);
       });
+    },
+    getRepositories: function getRepositories() {
+      var _this2 = this;
+
+      this.repositories = [];
+      axios.get('https://api.github.com/search/repositories?q=language:php+sort:stars').then(function (response) {
+        _this2.repositories = response.data.items;
+
+        _this2.saveOrUpdateRepositories(_this2.repositories);
+
+        _this2.state.saved = 1;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    saveOrUpdateRepositories: function saveOrUpdateRepositories(repositories) {
+      var _this3 = this;
+
+      axios.post('api/repositories', this.filterRepositories(repositories)).then(function (response) {
+        alert("Repositories ".concat(_this3.state.saved === 0 ? 'saved' : 'updated', "!"));
+        _this3.state.saved = 1;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    filterRepositories: function filterRepositories(repositories) {
+      var _this4 = this;
+
+      return repositories.map(function (repo) {
+        return {
+          'repository_id': repo.id,
+          'name': repo.full_name,
+          'url': repo.html_url,
+          'last_push_date': _this4.convertISOToDate(repo.pushed_at),
+          'created_date': _this4.convertISOToDate(repo.created_at),
+          'description': repo.description,
+          'stars': repo.stargazers_count
+        };
+      });
+    },
+    convertISOToDate: function convertISOToDate(isoDate) {
+      var date = new Date(isoDate);
+      return "".concat(date.getFullYear(), "-").concat(date.getMonth(), "-").concat(date.getDate());
     }
   }
 });
@@ -37695,18 +37745,29 @@ var render = function() {
       _c("div", { staticClass: "card-header" }, [
         _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-6" }, [
-            _vm._v("\n                    Featured\n                ")
+            _vm._v(
+              "\n                    Featured PHP Repositories\n                "
+            )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-6" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary float-right",
-                on: { click: _vm.getRepositories }
-              },
-              [_vm._v("Get Repositories")]
-            )
+            _vm.state.saved === 0
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary float-right",
+                    on: { click: _vm.getDbData }
+                  },
+                  [_vm._v("Get Repositories")]
+                )
+              : _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary float-right",
+                    on: { click: _vm.getRepositories }
+                  },
+                  [_vm._v("Update Repositories")]
+                )
           ])
         ])
       ]),
@@ -37717,10 +37778,12 @@ var render = function() {
         _vm._l(_vm.repositories, function(repository) {
           return _c("ul", { key: repository.id, staticClass: "list-group" }, [
             _c("li", { staticClass: "list-group-item" }, [
-              _c("h1", { staticClass: "h3 lh-condensed m-2" }, [
-                _c("a", { attrs: { href: "#" } }, [
-                  _vm._v(_vm._s(repository.full_name))
-                ]),
+              _c("h1", { staticClass: "h3 lh-condensed mt-2 mb-2" }, [
+                _c(
+                  "a",
+                  { attrs: { href: repository.html_url, target: "_blank" } },
+                  [_vm._v(_vm._s(repository.full_name))]
+                ),
                 _vm._v(" "),
                 _c("small", { staticClass: "smallest float-right" }, [
                   _vm._v("Repository ID: " + _vm._s(repository.id))
@@ -37737,8 +37800,8 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-6 url" }, [
-                  _c("a", { attrs: { href: repository.html_url } }, [
-                    _vm._v(_vm._s(repository.html_url))
+                  _c("a", { attrs: { href: repository.homepage } }, [
+                    _vm._v(_vm._s(repository.homepage))
                   ])
                 ])
               ]),
