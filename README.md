@@ -3,10 +3,10 @@
 
 ## How to set up
 
-After cloning the repository follow these steps:
+<p>After cloning the repository follow these steps:</p>
 
 ### MySQL
-Create a database with any name you like (e.g. trending\repositories).
+<p>Create a database with any name you like (e.g. trending\repositories).</p>
 
 ### Laravel
 <p>Once the database is created, proceed with the next steps:</p>
