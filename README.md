@@ -12,6 +12,7 @@
 <p>Once the database is created, proceed with the next steps:</p>
 
 - On your terminal, navigate to the root of the project.
+- Create the application key by running `php artisan key:generate`
 - From there, run composer install. This will install the required dependencies for the project.
 - When composer is finished installing dependencies, run `npm install`. This will download and install node dependencies.
 - Copy **.env.example** file and rename it **.env.**
